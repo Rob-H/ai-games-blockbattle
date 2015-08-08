@@ -1,3 +1,4 @@
+// scalastyle:off
 package bot
 
 import java.io.{PrintWriter, OutputStream, InputStream}

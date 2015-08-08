@@ -1,3 +1,4 @@
+// scalastyle:off
 package player
 
 import filed.Field

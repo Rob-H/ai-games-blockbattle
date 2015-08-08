@@ -7,5 +7,5 @@ package util
  */
 object Utils {
 
-  def getEnumName(obj: AnyRef) = obj.getClass.getSimpleName.split("\\$").last
+  def getEnumName(obj: AnyRef):String = obj.getClass.getSimpleName.split("\\$").last
 }
