@@ -1,9 +1,7 @@
 // scalastyle:off
 package bot
 
-import java.awt.Point
-
-import filed.{Field, ShapeType}
+import filed.{Field, ShapeType, Location}
 import player.Player
 
 import scala.collection.mutable
@@ -26,7 +24,7 @@ class BotState {
   private var opponent: Player = null
   private var currentShape: ShapeType = null
   private var nextShape: ShapeType = null
-  private var shapeLocation: Point = null
+  private var shapeLocation: Location = null
 
   private var MAX_TIMEBANK: Int = 0
   private var TIME_PER_MOVE: Int = 0
@@ -76,7 +74,7 @@ class BotState {
         players(player).field = new Field(this.FIELD_WIDTH, this.FIELD_HEIGHT, value)
       case "this_piece_position" =>
         val xy = value.split(",")
-        shapeLocation = new Point(Integer.parseInt(xy(0)), Integer.parseInt(xy(1)))
+        shapeLocation = Location(Integer.parseInt(xy(0)), Integer.parseInt(xy(1)))
       case _ => System.err.printf("Cannot parse updates with key \"%s\"\n", key);
     }
   }
