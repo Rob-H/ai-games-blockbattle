@@ -36,10 +36,13 @@ class PossibleEndStatesSpec extends FunSpec with Matchers {
         }
 
         describe("a field with uneven blocks") {
-            it("in a 4 by 3 grid with one block in the corner, should return the correct states") {
+            it("in a 4 by 3 grid with one block in the left corner, should return the correct states") {
                 new Bot().getPossibleEndLocations(new Field(4, 3, "1,1,0,0;1,1,0,0;2,0,0,0"), O) should === (List(Location(0,0), Location(1,1), Location(2,1)))
             }
 
+            it("in a 4 by 3 grid with one block in the right corner, should return the correct states") {
+                new Bot().getPossibleEndLocations(new Field(4, 3, "1,1,0,0;1,1,0,0;0,0,0,2"), O) should === (List(Location(0,1), Location(1,1), Location(2,0)))
+            }
         }
     }
 }
