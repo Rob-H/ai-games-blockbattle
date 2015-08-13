@@ -1,4 +1,3 @@
-// scalastyle:off
 package filed
 
 /**
@@ -30,8 +29,6 @@ class Field(val width: Int, val height: Int, private val fieldString : String) {
     res
   }
 
-  def getCell(x: Int, y: Int) = {
-    if (x < 0 || x >= width || y < 0 || y >= height) null else grid(x)(y)
-  }
+  def getCell(x: Int, y: Int):Cell = grid(x)(y)
 
 }
