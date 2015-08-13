@@ -10,7 +10,7 @@ class Bot {
     }
 
     def getPossibleEndLocations(field: Field, shapeType: ShapeType, shapeLocation: Location): List[Location] = {
-        val base = if(field.width > 2) List(Location(1, 0)) else Nil
-        shapeLocation :: base
+        val bottom = field.height - 2
+        (0 to field.width - 2).map(x => Location(x, bottom)).toList
     }
 }
