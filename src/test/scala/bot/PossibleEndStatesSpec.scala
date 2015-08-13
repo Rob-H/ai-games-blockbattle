@@ -22,6 +22,11 @@ class PossibleEndStatesSpec extends FunSpec with Matchers {
                 new Bot().getPossibleEndLocations(new Field(4, 3, "1,1,0,0;1,1,0,0;0,0,0,0"), O, Location(0,0)) should === (List(Location(0,1), Location(1,1), Location(2,1)))
             }
         }
-    }
 
+        describe("a board with blocks all along the bottom") {
+            it("in a 4 by 3 grid, should return the correct states") {
+                new Bot().getPossibleEndLocations(new Field(4, 3, "1,1,0,0;1,1,0,0;2,2,2,2"), O, Location(0,0)) should === (List(Location(0,0), Location(1,0), Location(2,0)))
+            }
+        }
+    }
 }
