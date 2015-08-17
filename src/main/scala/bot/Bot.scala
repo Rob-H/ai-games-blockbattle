@@ -11,12 +11,11 @@ class Bot {
     }
 
     def getPossibleEndLocations(field: Field, shapeType: ShapeType): List[Location] = {
-        def isSolidOrBlock(cell: CellType) = cell == BLOCK || cell == SOLID
         def asLowAsPossible(xLocation: Int) = {
             @tailrec def asLowAsPossibleIter(lowest: Int): Int = {
-                val leftCell = field.getCell(xLocation, lowest + 1).state;
-                val rightCell = field.getCell(xLocation + 1, lowest + 1).state;
-                if(isSolidOrBlock(leftCell) || isSolidOrBlock(rightCell)) asLowAsPossibleIter(lowest-1) else lowest
+                val leftCell = field.getCell(xLocation, lowest + 1);
+                val rightCell = field.getCell(xLocation + 1, lowest + 1);
+                if(leftCell.cannotBeOccupied || rightCell.cannotBeOccupied) asLowAsPossibleIter(lowest-1) else lowest
             }
             asLowAsPossibleIter(field.height-2)
         }
