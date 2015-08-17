@@ -1,7 +1,7 @@
 // scalastyle:off
 package bot
 
-import filed.{Field, ShapeType, Location}
+import field.{Field, ShapeType, Location}
 import player.Player
 
 import scala.collection.mutable

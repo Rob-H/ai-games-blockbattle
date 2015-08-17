@@ -1,5 +1,5 @@
 // scalastyle:off
-package filed
+package field
 
 import java.awt.Point
 

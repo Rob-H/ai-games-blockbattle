@@ -1,6 +1,6 @@
 package bot
 
-import filed._
+import field._
 import moves._
 import scala.annotation.tailrec
 

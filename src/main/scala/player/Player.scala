@@ -1,7 +1,7 @@
 // scalastyle:off
 package player
 
-import filed.Field
+import field.Field
 
 /**
  * User: goodg_000

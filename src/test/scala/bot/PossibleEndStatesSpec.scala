@@ -1,6 +1,6 @@
 package bot;
 
-import filed._
+import field._
 import org.scalatest._
 
 class PossibleEndStatesSpec extends FunSpec with Matchers { 
