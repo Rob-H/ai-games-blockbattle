@@ -71,7 +71,7 @@ class BotState {
       case "combo" =>
         players(player).combo = Integer.parseInt(value)
       case "field" =>
-        players(player).field = new Field(this.FIELD_WIDTH, this.FIELD_HEIGHT, value)
+        players(player).field = new Field(value)
       case "this_piece_position" =>
         val xy = value.split(",")
         shapeLocation = Location(Integer.parseInt(xy(0)), Integer.parseInt(xy(1)))

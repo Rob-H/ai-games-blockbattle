@@ -10,6 +10,12 @@ package field
  * Time: 0:25
  */
 case class CellType(code: Int) {
+
+    val isShape : Boolean = this == SHAPE
+    val isSolid : Boolean = this == SOLID
+    val isBlock : Boolean = this == BLOCK
+    val isEmpty : Boolean = this == EMPTY
+    val cannotBeOccupied: Boolean = this == BLOCK || this == SOLID
 }
 
 object EMPTY extends CellType(0)
