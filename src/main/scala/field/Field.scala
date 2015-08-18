@@ -15,7 +15,7 @@ case class Field(val fieldString : String) {
             val newCellShouldBeShape = x >= location.x && x <= (location.x + 1) && y >= location.y && y <= (location.y + 1)
             oldCellType match {
                 case nonOccupiable @ (SOLID | BLOCK) if !newCellShouldBeShape => nonOccupiable
-                case occupiable @ (SHAPE | EMPTY) => if(newCellShouldBeShape) SHAPE else EMPTY
+                case SHAPE | EMPTY => if(newCellShouldBeShape) SHAPE else EMPTY
             }
         }
         val fieldString = (0 until height).map(y => (0 until width).map(x => newCellType(x, y).code).mkString(",")).mkString(";")
