@@ -9,7 +9,7 @@ package field
  * Date: 06.07.2015
  * Time: 0:25
  */
-case class CellType(code: Int) {
+case class CellType(val code: Int) {
 
     val isShape : Boolean = this == SHAPE
     val isSolid : Boolean = this == SOLID
