@@ -19,6 +19,36 @@ class Bot {
             }
             asLowAsPossibleIter(field.height-2)
         }
-        (0 to field.width - 2).map(x => field.withShapeAt(shapeType, Location(x, asLowAsPossible(x)))).toList
+        shapeType match {
+            case O => (0 to field.width - 2).map(x => field.withShapeAt(shapeType, Location(x, asLowAsPossible(x))))
+            case I => List(
+                    new Field(
+                        "0,0,0,0;" +
+                        "0,0,0,0;" +
+                        "0,0,0,0;" +
+                        "1,1,1,1"
+                    ), new Field(
+                        "1,0,0,0;" +
+                        "1,0,0,0;" +
+                        "1,0,0,0;" +
+                        "1,0,0,0"
+                    ), new Field(
+                        "0,1,0,0;" +
+                        "0,1,0,0;" +
+                        "0,1,0,0;" +
+                        "0,1,0,0"
+                    ), new Field(
+                        "0,0,1,0;" +
+                        "0,0,1,0;" +
+                        "0,0,1,0;" +
+                        "0,0,1,0"
+                    ), new Field(
+                        "0,0,0,1;" +
+                        "0,0,0,1;" +
+                        "0,0,0,1;" +
+                        "0,0,0,1"
+                    )
+                )
+        }
     }
 }
