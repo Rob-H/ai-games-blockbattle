@@ -12,7 +12,11 @@ case class Field(val fieldString : String) {
     def withShapeAt(shapeType: ShapeType, location: Location): Field = {
         def newCellType(x: Int, y: Int) = {
             val oldCellType = getCell(x, y)
-            val newCellShouldBeShape = x >= location.x && x <= (location.x + 1) && y >= location.y && y <= (location.y + 1)
+            val newCellShouldBeShape = (shapeType, location) match {
+                case (O, _) =>  x >= location.x && x <= (location.x + 1) && y >= location.y && y <= (location.y + 1)
+                case (I, Location(_, _, 0)) => y == location.y + 2 && x >= location.x && x <= location.x + 3
+                case (I, Location(_, _, 90)) => x == location.x + 2 && y >= location.y && y <= location.y + 3            
+            }
             oldCellType match {
                 case nonOccupiable @ (SOLID | BLOCK) if !newCellShouldBeShape => nonOccupiable
                 case SHAPE | EMPTY => if(newCellShouldBeShape) SHAPE else EMPTY
