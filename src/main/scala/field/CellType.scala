@@ -16,6 +16,7 @@ case class CellType(val code: Int) {
     val isBlock : Boolean = this == BLOCK
     val isEmpty : Boolean = this == EMPTY
     val cannotBeOccupied: Boolean = this == BLOCK || this == SOLID
+    val canBeOccupied: Boolean = !cannotBeOccupied
 }
 
 object EMPTY extends CellType(0)
