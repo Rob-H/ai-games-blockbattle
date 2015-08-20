@@ -9,12 +9,12 @@ case class Field(val fieldString : String) {
 
     def getCell(x: Int, y: Int):CellType = grid(y)(x)
 
-    def withShapeAt(shape: Shape): Field = {
-        val locationsToOccupy = shape.locationsToOccupy(this);
+    def withShapeAt(shape: Shape, location: Location): Field = {
+        val locationsToOccupy = shape.locationsToOccupy(this, location);
 
         def newCellType(x: Int, y: Int) = {
             val oldCellType = getCell(x, y)
-            val newCellShouldBeShape = locationsToOccupy.contains((x, y))
+            val newCellShouldBeShape = locationsToOccupy.contains(Location(x, y))
             oldCellType match {
                 case nonOccupiable @ (SOLID | BLOCK) if !newCellShouldBeShape => nonOccupiable
                 case SHAPE | EMPTY => if(newCellShouldBeShape) SHAPE else EMPTY

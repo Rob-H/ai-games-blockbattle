@@ -1,11 +1,11 @@
 package field
 
-case class Shape(shapeType: ShapeType, location: Location) {
+case class Shape(shapeType: ShapeType, degreesRotated: Int) {
     type CellGrid = Seq[Seq[CellType]]
 
-    private def createGrid(size: Int, blockLocations: Tuple2[Int, Int]*) = {
+    private def createGrid(size: Int, blockLocations: Location*) = {
        for (row <- 0 until size) yield for (column <- 0 until size) yield {
-           if(blockLocations.contains((column, row))) SHAPE
+           if(blockLocations.contains(Location(column, row))) SHAPE
            else EMPTY
        }
     }
@@ -16,14 +16,14 @@ case class Shape(shapeType: ShapeType, location: Location) {
     }
 
     private val unrotatedGrid = shapeType match {
-        case O => createGrid(2, (0, 0), (0, 1), (1, 0), (1, 1))
-        case I => createGrid(4, (0, 1), (1, 1), (2, 1), (3, 1))
+        case O => createGrid(2, Location(0, 0), Location(0, 1), Location(1, 0), Location(1, 1))
+        case I => createGrid(4, Location(0, 1), Location(1, 1), Location(2, 1), Location(3, 1))
     }
 
-    val timesToRotate = location.degrees / 90
+    val timesToRotate = degreesRotated / 90
     val grid = rotate(unrotatedGrid, timesToRotate)
 
-    def locationsToOccupy(field: Field): Seq[Tuple2[Int, Int]] = for (x <- 0 until grid.length; y <- 0 until grid.length; if grid(y)(x) == SHAPE) yield (location.x + x, location.y + y)
+    def locationsToOccupy(field: Field, location: Location): Seq[Location] = for (x <- 0 until grid.length; y <- 0 until grid.length; if grid(y)(x) == SHAPE) yield Location(location.x + x, location.y + y)
 
-    def canBePlacedIn(field: Field): Boolean = locationsToOccupy(field).map{ case (x, y) => field.getCell(x, y)}.forall(_.canBeOccupied)
+    def canBePlacedIn(field: Field, location: Location): Boolean = locationsToOccupy(field, location).map(loc => field.getCell(loc.x, loc.y)).forall(_.canBeOccupied)
 }
