@@ -1,6 +1,6 @@
 package field
 
-class Shape(shapeType: ShapeType, location: Location) {
+case class Shape(shapeType: ShapeType, location: Location) {
     type CellGrid = Seq[Seq[CellType]]
 
     private def createGrid(size: Int, blockLocations: Tuple2[Int, Int]*) = {
@@ -23,10 +23,7 @@ class Shape(shapeType: ShapeType, location: Location) {
     val timesToRotate = location.degrees / 90
     val grid = rotate(unrotatedGrid, timesToRotate)
 
-    def canBePlacedIn(field: Field): Boolean = {
-        val cellsToOccupy =
-            for (x <- 0 until grid.length; y <- 0 until grid.length; if grid(y)(x) == SHAPE)
-                yield field.getCell(location.x + x, location.y + y)
-        cellsToOccupy.forall(_.canBeOccupied)
-    }
+    def locationsToOccupy(field: Field): Seq[Tuple2[Int, Int]] = for (x <- 0 until grid.length; y <- 0 until grid.length; if grid(y)(x) == SHAPE) yield (location.x + x, location.y + y)
+
+    def canBePlacedIn(field: Field): Boolean = locationsToOccupy(field).map{ case (x, y) => field.getCell(x, y)}.forall(_.canBeOccupied)
 }
