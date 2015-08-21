@@ -1,5 +1,7 @@
 package field
 
+import scala.annotation.tailrec
+
 case class Shape(shapeType: ShapeType, degreesRotated: Int) {
     type CellGrid = Seq[Seq[CellType]]
 
@@ -20,10 +22,27 @@ case class Shape(shapeType: ShapeType, degreesRotated: Int) {
         case I => createGrid(4, Location(0, 1), Location(1, 1), Location(2, 1), Location(3, 1))
     }
 
-    val timesToRotate = degreesRotated / 90
-    val grid = rotate(unrotatedGrid, timesToRotate)
+    private val timesToRotate = degreesRotated / 90
 
-    def locationsToOccupy(field: Field, location: Location): Seq[Location] = for (x <- 0 until grid.length; y <- 0 until grid.length; if grid(y)(x) == SHAPE) yield Location(location.x + x, location.y + y)
+    private val grid = rotate(unrotatedGrid, timesToRotate)
+    private lazy val locationsOfBlocks = for (x <- 0 until grid.length; y <- 0 until grid.length; if grid(y)(x) == SHAPE) yield Location(x, y)
 
-    def canBePlacedIn(field: Field, location: Location): Boolean = locationsToOccupy(field, location).map(loc => field.getCell(loc.x, loc.y)).forall(_.canBeOccupied)
+    def locationsToOccupy(location: Location): Seq[Location] = locationsOfBlocks.map{ case Location(x, y) => Location(location.x + x, location.y + y) }
+
+    def canBePlacedIn(field: Field, location: Location): Boolean = locationsToOccupy(location).map(loc => field.getCell(loc.x, loc.y)).forall(_.canBeOccupied)
+
+    def allPossibleEndLocations(field: Field): Seq[Location] = {
+        val asLeftAsPossible = 0 - locationsOfBlocks.foldLeft(field.width)(_ min _.x)
+        val asRightAsPossible = field.width - 1 - locationsOfBlocks.foldLeft(0)(_ max _.x)
+        val asLowAsPossible = field.height - 1 - locationsOfBlocks.foldLeft(0)(_ max _.y)
+
+        def lowestValidPosition(xLocation: Int) = {
+            @tailrec def lowestValidPositionIter(lowest: Int): Int = {
+                if(canBePlacedIn(field, Location(xLocation, lowest))) lowest
+                else lowestValidPositionIter(lowest-1)
+            }
+            lowestValidPositionIter(asLowAsPossible)
+        }
+        for (x <- asLeftAsPossible to asRightAsPossible) yield Location(x, lowestValidPosition(x))
+    }
 }
