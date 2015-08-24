@@ -16,4 +16,6 @@ val scalaStyleOnTestTask = taskKey[Unit]("scalaStyleTest");
 
 scalaStyleOnTestTask := org.scalastyle.sbt.ScalastylePlugin.scalastyle.in(Test).toTask("").value
 
-(test in Test) <<= (test in Test) dependsOn (scalaStyleOnTestTask, scalaStyleTask)
+val ctags = net.ceedubs.sbtctags.CtagsKeys.genCtags
+
+(test in Test) <<= (test in Test) dependsOn (scalaStyleOnTestTask, scalaStyleTask, ctags)
