@@ -24,6 +24,7 @@ case class Shape(shapeType: ShapeType, degreesRotated: Int) {
         case L => createGrid(3, Location(2, 0), Location(0, 1), Location(1, 1), Location(2, 1))
         case S => createGrid(3, Location(1, 0), Location(2, 0), Location(0, 1), Location(1, 1))
         case Z => createGrid(3, Location(0, 0), Location(1, 0), Location(1, 1), Location(2, 1))
+        case T => createGrid(3, Location(1, 0), Location(0, 1), Location(1, 1), Location(2, 1))
     }
 
     private val timesToRotate = degreesRotated / 90

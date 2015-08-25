@@ -35,6 +35,11 @@ class Bot {
 
             case Z =>   Shape(Z, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(Z, notRotated), loc)) ++
                         Shape(Z, rotatedOnce).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(Z, rotatedOnce), loc))
+
+            case T =>   Shape(T, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(T, notRotated), loc)) ++
+                        Shape(T, rotatedOnce).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(T, rotatedOnce), loc)) ++
+                        Shape(T, rotatedTwice).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(T, rotatedTwice), loc)) ++
+                        Shape(T, rotatedThreeTimes).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(T, rotatedThreeTimes), loc))
         }
     }
 }
