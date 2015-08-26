@@ -9,7 +9,18 @@ package field
  * Date: 06.07.2015
  * Time: 22:33
  */
-case class ShapeType(name: String)
+case class ShapeType(name: String) {
+    val notRotated = 0;
+    val rotatedOnce = 90;
+    val rotatedTwice = 180;
+    val rotatedThreeTimes = 270;
+
+    val uniqueRotations = name match {
+        case "O" => List(notRotated)
+        case "I" | "S" | "Z" => List(notRotated, rotatedOnce)
+        case "J" | "L" | "T" => List(notRotated, rotatedOnce, rotatedTwice, rotatedThreeTimes)
+    }
+}
 
 object I extends ShapeType("I")
 object J extends ShapeType("J")

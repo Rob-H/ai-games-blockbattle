@@ -14,32 +14,9 @@ class Bot {
     }
 
     def getPossibleEndStates(field: Field, shapeType: ShapeType): Seq[Field] = {
-        shapeType match {
-            case O =>   Shape(O, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(O, notRotated), loc))
-
-            case I =>   Shape(I, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(I, notRotated), loc)) ++
-                        Shape(I, rotatedOnce).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(I, rotatedOnce), loc))
-
-            case J =>   Shape(J, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(J, notRotated), loc)) ++
-                        Shape(J, rotatedOnce).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(J, rotatedOnce), loc)) ++
-                        Shape(J, rotatedTwice).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(J, rotatedTwice), loc)) ++
-                        Shape(J, rotatedThreeTimes).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(J, rotatedThreeTimes), loc))
-
-            case L =>   Shape(L, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(L, notRotated), loc)) ++
-                        Shape(L, rotatedOnce).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(L, rotatedOnce), loc)) ++
-                        Shape(L, rotatedTwice).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(L, rotatedTwice), loc)) ++
-                        Shape(L, rotatedThreeTimes).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(L, rotatedThreeTimes), loc))
-
-            case S =>   Shape(S, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(S, notRotated), loc)) ++
-                        Shape(S, rotatedOnce).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(S, rotatedOnce), loc))
-
-            case Z =>   Shape(Z, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(Z, notRotated), loc)) ++
-                        Shape(Z, rotatedOnce).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(Z, rotatedOnce), loc))
-
-            case T =>   Shape(T, notRotated).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(T, notRotated), loc)) ++
-                        Shape(T, rotatedOnce).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(T, rotatedOnce), loc)) ++
-                        Shape(T, rotatedTwice).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(T, rotatedTwice), loc)) ++
-                        Shape(T, rotatedThreeTimes).allPossibleEndLocations(field).map(loc => field.withShapeAt(Shape(T, rotatedThreeTimes), loc))
-        }
+        for {
+            rotatedShape <- shapeType.uniqueRotations.map(Shape(shapeType, _))
+            loc <- rotatedShape.allPossibleEndLocations(field)
+        } yield field.withShapeAt(rotatedShape, loc)
     }
 }
