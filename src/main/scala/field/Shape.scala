@@ -14,7 +14,7 @@ case class Shape(shapeType: ShapeType, degreesRotated: Int) {
         }
     }
 
-    private def rotateClockwise(grid: CellGrid, timesToRotate: Int): CellGrid  = {
+    @tailrec private def rotateClockwise(grid: CellGrid, timesToRotate: Int): CellGrid  = {
         lazy val rotateAntiClockwiseOnce = grid.transpose.reverse
         lazy val rotateClockwiseOnce = grid.transpose.map(x => x.reverse)
 

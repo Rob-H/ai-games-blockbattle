@@ -1,14 +1,5 @@
 package field
 
-/**
- * ShapeType class
- *
- * Enum for all possible Shape types
- *
- * User: goodg_000
- * Date: 06.07.2015
- * Time: 22:33
- */
 case class ShapeType(name: String) {
     val notRotated = 0;
     val rotatedOnce = 90;
