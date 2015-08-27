@@ -1,21 +1,12 @@
 package field
 
-/**
- * CellType class
- *
- * Enum of all the possible Cell types
- *
- * User: goodg_000
- * Date: 06.07.2015
- * Time: 0:25
- */
 case class CellType(val code: Int) {
 
     val isShape : Boolean = this == SHAPE
     val isSolid : Boolean = this == SOLID
     val isBlock : Boolean = this == BLOCK
     val isEmpty : Boolean = this == EMPTY
-    val cannotBeOccupied: Boolean = this == BLOCK || this == SOLID
+    val cannotBeOccupied: Boolean = isBlock || isSolid
     val canBeOccupied: Boolean = !cannotBeOccupied
 }
 
