@@ -1,6 +1,5 @@
-package bot;
+package field;
 
-import field.Field
 import org.scalatest._
 
 class FieldRatingSpec extends FunSpec with Matchers {
