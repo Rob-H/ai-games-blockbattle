@@ -14,4 +14,6 @@ class Bot {
             loc <- rotatedShape.allPossibleEndLocations(field)
         } yield field.withShapeAt(rotatedShape, loc)
     }
+
+    def getPathTo(currentState: FieldInPlay, target: Field): Seq[MoveType] = List()
 }
