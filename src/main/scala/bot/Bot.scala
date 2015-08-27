@@ -15,5 +15,8 @@ class Bot {
         } yield field.withShapeAt(rotatedShape, loc)
     }
 
-    def getPathTo(currentState: FieldInPlay, target: Field): Seq[MoveType] = List()
+    def getPathTo(currentState: FieldInPlay, target: Field): Seq[MoveType] =
+        if (currentState.moveLeft.currentField == target) List(LEFT)
+        else if (currentState.moveRight.currentField == target) List(RIGHT)
+        else List()
 }
