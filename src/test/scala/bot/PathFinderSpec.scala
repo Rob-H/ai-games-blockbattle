@@ -98,6 +98,16 @@ class PathFinderSpec extends FunSpec with Matchers {
 
             getPathTo(targetField, Shape(O), Location(6,0)) should === (resultOf(LEFT, LEFT, LEFT, LEFT, LEFT, LEFT))
         }
+
+        it("when you need to move down and right, it can handle it") {
+            val targetField = Field(
+                "0,0,2,2;" +
+                "0,1,1,2;" +
+                "0,1,1,2"
+            )
+
+            getPathTo(targetField, Shape(O), Location(0,0)) should === (resultOf(DOWN, RIGHT))
+        }
     }
 }
 

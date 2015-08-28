@@ -8,11 +8,12 @@ class FieldInPlay(val field: Field, val shape: Shape, val locationOfShape: Locat
         else None
     }
     lazy val currentField = field.withShapeAt(shape, locationOfShape)
-    lazy val moveRight = maybeAtLocation(Location(locationOfShape.x + 1, locationOfShape.y))
-    lazy val moveLeft = maybeAtLocation(Location(locationOfShape.x - 1, locationOfShape.y))
+    lazy val moveRight = maybeAtLocation(locationOfShape.right)
+    lazy val moveLeft = maybeAtLocation(locationOfShape.left)
+    lazy val moveDown = maybeAtLocation(locationOfShape.down)
     lazy val drop = {
         @tailrec def resultOfDrop(location: Location): Location = {
-            val nextLocation = Location(location.x, location.y + 1)
+            val nextLocation = location.down
             if(!shape.canBePlacedIn(field, nextLocation)) location
             else resultOfDrop(nextLocation)
         }

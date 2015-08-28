@@ -19,7 +19,7 @@ class Bot {
         def iter(currentState: FieldInPlay, explored: Set[Field]): Option[Seq[MoveType]] = {
             if (currentState.currentField == target || currentState.drop.currentField == target) Some(List())
             else {
-                val nextSteps = List((LEFT, currentState.moveLeft), (RIGHT, currentState.moveRight))
+                val nextSteps = List((LEFT, currentState.moveLeft), (RIGHT, currentState.moveRight), (DOWN, currentState.moveDown))
 
                 val solutions = for {
                     (action, Some(state)) <- nextSteps
