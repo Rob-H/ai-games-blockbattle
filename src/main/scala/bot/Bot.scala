@@ -30,8 +30,8 @@ class Bot {
                 val solutions = for {
                     (action, Some(state)) <- nextSteps
                     if(!(explored contains state.currentField))
-                    solution <- iter(state, explored + currentState.currentField)
-                } yield action :: solution.toList
+                    restOfSolution <- iter(state, explored + currentState.currentField)
+                } yield action :: restOfSolution.toList
 
                 solutions match {
                     case head #:: _ => Some(head)
