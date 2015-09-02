@@ -4,6 +4,7 @@ import scala.annotation.tailrec
 
 case class Shape(shapeType: ShapeType, degreesRotated: Int = 0) {
     type CellGrid = Seq[Seq[CellType]]
+    private val oneRotation = 90
 
     private def createGrid(blockLocations: Seq[Location]) = {
         val size = blockLocations.foldLeft(0)((currentLargest, location) => math.max(currentLargest, math.max(location.x, location.y)))
@@ -25,7 +26,7 @@ case class Shape(shapeType: ShapeType, degreesRotated: Int = 0) {
 
     private val unrotatedGrid = createGrid(shapeType.relativeBlockLocations)
 
-    private val timesToRotate = degreesRotated / 90
+    private val timesToRotate = degreesRotated / oneRotation
 
     private val grid = rotateClockwise(unrotatedGrid, timesToRotate)
     private lazy val locationsOfBlocks = for (x <- 0 until grid.length; y <- 0 until grid.length; if grid(y)(x) == SHAPE) yield Location(x, y)
@@ -49,4 +50,6 @@ case class Shape(shapeType: ShapeType, degreesRotated: Int = 0) {
         }
         for (x <- asLeftAsPossible to asRightAsPossible) yield Location(x, lowestValidPosition(x))
     }
+
+    lazy val turnRight = Shape(shapeType, degreesRotated + oneRotation)
 }

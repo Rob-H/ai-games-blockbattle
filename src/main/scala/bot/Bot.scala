@@ -19,7 +19,12 @@ class Bot {
         def iter(currentState: FieldInPlay, explored: Set[Field]): Option[Seq[MoveType]] = {
             if (currentState.currentField == target || currentState.drop.currentField == target) Some(List())
             else {
-                val nextSteps = List((LEFT, currentState.moveLeft), (RIGHT, currentState.moveRight), (DOWN, currentState.moveDown))
+                val nextSteps = Stream(
+                    (LEFT, currentState.moveLeft),
+                    (RIGHT, currentState.moveRight),
+                    (DOWN, currentState.moveDown),
+                    (TURNRIGHT, currentState.turnRight)
+                )
 
                 val solutions = for {
                     (action, Some(state)) <- nextSteps
@@ -28,8 +33,8 @@ class Bot {
                 } yield action :: solution.toList
 
                 solutions match {
-                    case Nil => None
-                    case _ => Some(solutions.head)
+                    case head #:: _ => Some(head)
+                    case _ => None
                 }
             }
         }
