@@ -23,7 +23,8 @@ class Bot {
                     (LEFT, currentState.moveLeft),
                     (RIGHT, currentState.moveRight),
                     (DOWN, currentState.moveDown),
-                    (TURNRIGHT, currentState.turnRight)
+                    (TURNRIGHT, currentState.turnRight),
+                    (TURNLEFT, currentState.turnLeft)
                 )
 
                 val solutions = for {
