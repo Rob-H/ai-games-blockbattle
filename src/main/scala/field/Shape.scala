@@ -34,7 +34,12 @@ case class Shape(shapeType: ShapeType, degreesRotated: Int = 0) {
     def locationsToOccupy(location: Location): Seq[Location] = locationsOfBlocks.map{ case Location(x, y) => Location(location.x + x, location.y + y) }
 
     def canBePlacedIn(field: Field, location: Location): Boolean =
-        locationsToOccupy(location).forall(loc => loc.x >= 0 && loc.x < field.width && loc.y < field.height && field.getCell(loc.x, loc.y).canBeOccupied)
+        locationsToOccupy(location).forall(loc =>
+            loc.x >= 0 &&
+            loc.x < field.width &&
+            loc.y < field.height &&
+            (loc.y < 0 || field.getCell(loc.x, loc.y).canBeOccupied)
+        )
 
     def allPossibleEndLocations(field: Field): Seq[Location] = {
         val asLeftAsPossible = 0 - locationsOfBlocks.foldLeft(field.width)(_ min _.x)

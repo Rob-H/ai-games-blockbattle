@@ -130,6 +130,16 @@ class PathFinderSpec extends FunSpec with Matchers {
 
             getPathTo(targetField, Shape(I), Location(0,0)) should === (resultOf(TURNLEFT))
         }
+
+        it("when the block starts above the field, it can handle it") {
+            val targetField = Field(
+                "0,0,0,0;" +
+                "0,0,0,0;" +
+                "1,1,0,0;" +
+                "1,1,0,0"
+            )
+            getPathTo(targetField, Shape(O), Location(0,-2)) should === (resultOf())
+        }
     }
 }
 
