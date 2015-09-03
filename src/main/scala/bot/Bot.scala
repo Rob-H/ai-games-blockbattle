@@ -4,6 +4,7 @@ import field._
 import moves._
 
 class Bot {
+
     def getMoves(state: BotState, timeout: Long): Seq[MoveType] = {
         val startState = new FieldInPlay(state.getMyField, Shape(state.getCurrentShape), state.getShapeLocation)
         val possibleEndStates = (getPossibleEndStates(state.getMyField, state.getCurrentShape) sortBy (-_.heuristic)).toStream
@@ -25,29 +26,31 @@ class Bot {
     }
 
     def getPathTo(startState: FieldInPlay, target: Field): Option[Seq[MoveType]] = {
-        def iter(currentState: FieldInPlay, explored: Set[Field]): Option[Seq[MoveType]] = {
-            if (currentState.currentField == target || currentState.drop.currentField == target) Some(List())
+        type PathAndState = Tuple2[List[MoveType], FieldInPlay]
+        def getAllActionsForState(state: FieldInPlay, currentPath: List[MoveType]) = {
+            val allMoves = List(
+                (LEFT :: currentPath, state.moveLeft),
+                (RIGHT :: currentPath, state.moveRight),
+                (DOWN :: currentPath, state.moveDown),
+                (TURNRIGHT :: currentPath, state.turnRight),
+                (TURNLEFT :: currentPath, state.turnLeft)
+            )
+            val allValidMoves = for( (path, Some(state)) <- allMoves ) yield (path, state)
+            allValidMoves
+        }
+        def iter(currentStateAndPath: PathAndState, statesToExplore: List[PathAndState], explored: Set[Field]): Option[Seq[MoveType]] = {
+            val (currentPath, currentState) = currentStateAndPath
+            if (currentState.currentField == target || currentState.drop.currentField == target) Some(currentPath.reverse)
             else {
-                val nextSteps = Stream(
-                    (LEFT, currentState.moveLeft),
-                    (RIGHT, currentState.moveRight),
-                    (DOWN, currentState.moveDown),
-                    (TURNRIGHT, currentState.turnRight),
-                    (TURNLEFT, currentState.turnLeft)
-                )
-
-                val solutions = for {
-                    (action, Some(state)) <- nextSteps
-                    if(!(explored contains state.currentField))
-                    restOfSolution <- iter(state, explored + currentState.currentField)
-                } yield action :: restOfSolution.toList
-
-                solutions match {
-                    case head #:: _ => Some(head)
+                statesToExplore match {
+                    case (path, state) :: remainingStates => {
+                        if(explored contains state.currentField) iter(currentStateAndPath, remainingStates, explored)
+                        else iter((path, state), remainingStates ++ getAllActionsForState(state, path), explored + currentState.currentField)
+                    }
                     case _ => None
                 }
             }
         }
-        iter(startState, Set())
+        iter((Nil, startState), getAllActionsForState(startState, Nil), Set())
     }
 }
