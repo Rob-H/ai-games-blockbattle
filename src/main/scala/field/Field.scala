@@ -9,12 +9,26 @@ case class Field(val fieldString : String) {
 
     def getCell(x: Int, y: Int):CellType = grid(y)(x)
 
-    lazy val heuristic = grid.foldLeft(0) {(acc, row) => {
-        val emptySquares = row.filter(_.isEmpty).length
-        if(emptySquares == width) acc
-        else if (emptySquares == 0) acc + width
-        else acc - emptySquares
-    }}
+    lazy val heuristic = {
+        val fullRowsHeuristic = grid.foldLeft(0) {(acc, row) => {
+            val emptySquares = row.filter(_.isEmpty).length
+            if(emptySquares == width) acc
+            else if (emptySquares == 0) acc + width
+            else acc - emptySquares
+        }}
+
+        val numberOfEmptyBlocksWithBlockAbove = (for {
+            rowIndex <- 1 until height
+            columnIndex <- 0 until width
+        } yield {
+            val cell = getCell(columnIndex, rowIndex)
+            if(cell.isEmpty && !getCell(columnIndex, rowIndex - 1).isEmpty) 1
+            else 0
+        }).sum
+
+        fullRowsHeuristic - numberOfEmptyBlocksWithBlockAbove
+    }
+
 
     def withShapeAt(shape: Shape, location: Location): Field = {
         val locationsToOccupy = shape.locationsToOccupy(location);

@@ -87,6 +87,28 @@ class FieldRatingSpec extends FunSpec with Matchers {
                 field1.heuristic should be > field2.heuristic
             }
         }
+
+        describe("should favour not having more full rows above less full rows") {
+            it("for squares in the left corner and T block") {
+                val field1 = Field(
+                    "0,0,0,0,0;" +
+                    "0,0,0,0,0;" +
+                    "0,0,0,0,0;" +
+                    "0,2,0,1,0;" +
+                    "0,2,1,1,1;"
+                )
+
+                val field2 = Field(
+                    "0,0,0,0,0;" +
+                    "0,0,0,0,0;" +
+                    "0,0,0,0,0;" +
+                    "0,2,1,1,1;" +
+                    "0,2,0,1,0;"
+                )
+
+                field1.heuristic should be > field2.heuristic
+            }
+        }
     }
 }
 
