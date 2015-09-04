@@ -108,6 +108,26 @@ class FieldRatingSpec extends FunSpec with Matchers {
 
                 field1.heuristic should be > field2.heuristic
             }
+
+            it("unless you're creating a full row") {
+                val field1 = Field(
+                    "0,0,0,0,0;" +
+                    "0,0,0,0,0;" +
+                    "0,0,0,0,0;" +
+                    "2,2,1,1,1;" +
+                    "0,2,0,1,0;"
+                )
+
+                val field2 = Field(
+                    "0,0,0,0,0;" +
+                    "0,0,0,0,0;" +
+                    "0,0,0,0,0;" +
+                    "2,2,0,1,0;" +
+                    "0,2,1,1,1;"
+                )
+
+                field1.heuristic should be > field2.heuristic
+            }
         }
     }
 }
