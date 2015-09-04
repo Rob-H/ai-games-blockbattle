@@ -2,6 +2,7 @@ package bot
 
 import field._
 import moves._
+import scala.annotation.tailrec
 
 class Bot {
 
@@ -38,7 +39,8 @@ class Bot {
             val allValidMoves = for( (path, Some(state)) <- allMoves ) yield (path, state)
             allValidMoves
         }
-        def iter(currentStateAndPath: PathAndState, statesToExplore: List[PathAndState], explored: Set[Field]): Option[Seq[MoveType]] = {
+
+        @tailrec def iter(currentStateAndPath: PathAndState, statesToExplore: List[PathAndState], explored: Set[Field]): Option[Seq[MoveType]] = {
             val (currentPath, currentState) = currentStateAndPath
             if (currentState.currentField == target || currentState.drop.currentField == target) Some(currentPath.reverse)
             else {
