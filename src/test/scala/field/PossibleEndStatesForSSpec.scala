@@ -1,4 +1,4 @@
-package bot
+package field
 
 import field._
 import org.scalatest._
