@@ -5,7 +5,7 @@ import org.scalatest._
 
 trait PossibleEndStatesSpecBase {
     def possibleEndLocationsFor(field: Field, shapeType: ShapeType): Seq[Field] = {
-        new Bot().getPossibleEndStates(field, shapeType)
+        field.getPossibleEndStates(shapeType)
     }
 
     def resultOf(endStates: Field*): Seq[Field] = {
