@@ -23,7 +23,7 @@ class Bot extends PathFinder{
                 .foldLeft(-(field.height*field.width))((current, next) => math.max(current, next.heuristic + endState.heuristic))
 
         val bestEndStatesForCurrentShape = (field.getPossibleEndStates(currentShape) sortBy (-_.heuristic)).toStream.take(5)
-        bestEndStatesForCurrentShape map { endState => (endState, getHeuristicOfNextShape(endState)) } sortBy (-_._2) map (_._1)
+        bestEndStatesForCurrentShape sortBy (-getHeuristicOfNextShape(_))
     }
 }
 
