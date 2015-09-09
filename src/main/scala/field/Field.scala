@@ -46,6 +46,25 @@ case class Field(val fieldString : String) {
         Field(fieldString);
     }
 
+    lazy val finalise: Field = {
+        val gridWithShapeAsBlock = grid.map(row => row.map { _ match {
+            case SHAPE => BLOCK
+            case shapeType @ _ => shapeType
+        }})
+
+        val fieldWithoutFullRows = (for {
+            row <- gridWithShapeAsBlock
+            if(row.exists(cell => !cell.isBlock))
+        } yield (row)).toArray
+
+        val numberOfRowsToAdd = height - fieldWithoutFullRows.length
+
+        val finalField = Array.fill(numberOfRowsToAdd)(Array.fill(width)(EMPTY)) ++ fieldWithoutFullRows
+
+        val fieldString = finalField.map(row => row.map(_.code).mkString(",")).mkString(";")
+        Field(fieldString);
+    }
+
     def getPossibleEndStates(shapeType: ShapeType): Seq[Field] = {
         for {
             rotatedShape <- shapeType.uniqueRotations.map(Shape(shapeType, _))
