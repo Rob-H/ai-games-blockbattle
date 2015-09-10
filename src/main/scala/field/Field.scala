@@ -11,14 +11,15 @@ case class Field(val fieldString : String) {
 
     lazy val heuristic = {
         val fullRowsHeuristic = grid.foldLeft(0) {(acc, row) => {
-            val emptySquares = row.filter(_.isEmpty).length
-            if(emptySquares == width) acc
-            else if (emptySquares == 0) acc + width
-            else acc - emptySquares
+            val emptySquares = (row filter(_.isEmpty)).length
+            if (emptySquares == width) acc
+            else if (emptySquares == 0) acc + (width)
+            else acc - (emptySquares/2)
         }}
 
         val numberOfEmptyBlocksWithBlockAbove = (for {
             rowIndex <- 1 until height
+            if(grid(rowIndex-1) exists (_.isEmpty))
             columnIndex <- 0 until width
         } yield {
             val cell = getCell(columnIndex, rowIndex)
@@ -26,7 +27,7 @@ case class Field(val fieldString : String) {
             else 0
         }).sum
 
-        fullRowsHeuristic - numberOfEmptyBlocksWithBlockAbove
+        fullRowsHeuristic - (numberOfEmptyBlocksWithBlockAbove * width)
     }
 
 

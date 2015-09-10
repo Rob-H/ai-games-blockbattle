@@ -20,7 +20,7 @@ class Bot extends PathFinder{
     def getOrderedPossibleEndStates(field: Field, currentShape: ShapeType, nextShape: ShapeType): Stream[Field] = {
         def getHeuristicOfNextShape(endState: Field) =
             endState.finalise.getPossibleEndStates(nextShape)
-                .foldLeft(-(field.height*field.width))((current, next) => math.max(current, next.heuristic + endState.heuristic))
+                .foldLeft(-(field.height*field.width))((current, next) => math.max(current, endState.heuristic + (next.heuristic*2)))
 
         val bestEndStatesForCurrentShape = (field.getPossibleEndStates(currentShape) sortBy (-_.heuristic)).toStream.take(5)
         bestEndStatesForCurrentShape sortBy (-getHeuristicOfNextShape(_))
