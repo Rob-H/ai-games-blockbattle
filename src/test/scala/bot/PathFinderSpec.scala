@@ -167,6 +167,30 @@ class PathFinderSpec extends FunSpec with Matchers {
 
             getPathTo(targetField, Shape(Z), Location(3, -1)) should not be empty
         }
+
+        describe("always tries to rotate T peice in to position if it can") {
+            it("for a simple scenario") {
+                val targetField = Field(
+                    "0,0,1,0,0;" +
+                    "0,0,1,1,0;" +
+                    "0,0,1,0,0"
+                )
+                getPathTo(targetField, Shape(T), Location(0, 0)) should === (resultOf(RIGHT, TURNRIGHT))
+            }
+
+            it("when it can be dropped") {
+                val targetField = Field(
+                    "0,0,0,0;" +
+                    "0,0,0,0;" +
+                    "0,0,0,0;" +
+                    "0,0,1,0;" +
+                    "0,0,1,1;" +
+                    "0,0,1,0"
+                )
+                getPathTo(targetField, Shape(T), Location(0, 0)) should === (resultOf(RIGHT, DOWN, DOWN, DOWN, TURNRIGHT))
+
+            }
+        }
     }
 }
 

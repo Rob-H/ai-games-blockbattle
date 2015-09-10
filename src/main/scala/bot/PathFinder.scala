@@ -23,7 +23,11 @@ trait PathFinder {
 
         @tailrec def iter(currentStateAndPath: PathAndState, statesToExplore: List[PathAndState], explored: Set[Field]): Option[Seq[MoveType]] = {
             val (currentPath, currentState) = currentStateAndPath
-            if (currentState.currentField == target || currentState.drop.currentField == target) Some(currentPath.reverse)
+            val weAreFinished =
+                currentState.currentField == target ||
+                (currentState.currentShapeType != T && currentState.drop.currentField == target)
+
+            if (weAreFinished) Some(currentPath.reverse)
             else {
                 statesToExplore match {
                     case (path, state) :: remainingStates => {

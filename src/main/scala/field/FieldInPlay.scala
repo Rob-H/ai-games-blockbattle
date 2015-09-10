@@ -7,6 +7,7 @@ class FieldInPlay(val field: Field, val shape: Shape, val locationOfShape: Locat
         if(potentialShape.canBePlacedIn(field, potentialLocation)) Some(new FieldInPlay(field, potentialShape, potentialLocation))
         else None
     }
+    lazy val currentShapeType = shape.shapeType
     lazy val currentField = field.withShapeAt(shape, locationOfShape)
 
     lazy val moveRight = maybeAtLocation(shape, locationOfShape.right)
