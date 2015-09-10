@@ -10,6 +10,15 @@ case class Field(val fieldString : String) {
     def getCell(x: Int, y: Int):CellType = grid(y)(x)
 
     lazy val heuristic = {
+        def thereAreAnyCellsAboveThatAreNotEmpty(columnIndex: Int, rowIndex: Int) = {
+            val allCellsAboveThatAreNotPartOfAFullRow = for {
+                r <- (rowIndex - 1) to 0 by -1
+                if(grid(r) exists (_.isEmpty))
+            } yield (grid(r)(columnIndex))
+
+            allCellsAboveThatAreNotPartOfAFullRow exists (!_.isEmpty)
+        }
+
         val fullRowsHeuristic = grid.foldLeft(0) {(acc, row) => {
             val emptySquares = (row filter(_.isEmpty)).length
             if (emptySquares == width) acc
@@ -19,11 +28,10 @@ case class Field(val fieldString : String) {
 
         val numberOfEmptyBlocksWithBlockAbove = (for {
             rowIndex <- 1 until height
-            if(grid(rowIndex-1) exists (_.isEmpty))
             columnIndex <- 0 until width
         } yield {
             val cell = getCell(columnIndex, rowIndex)
-            if(cell.isEmpty && !getCell(columnIndex, rowIndex - 1).isEmpty) 1
+            if(cell.isEmpty && thereAreAnyCellsAboveThatAreNotEmpty(columnIndex, rowIndex)) 1
             else 0
         }).sum
 
