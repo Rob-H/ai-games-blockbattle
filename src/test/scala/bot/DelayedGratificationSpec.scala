@@ -30,6 +30,27 @@ class DelayedGratificationSpec extends FunSpec with Matchers {
         }
     }
 
+    describe("when the next good state is actually unreachable") {
+        it("does not use it") {
+            val field = Field(
+                "0,0,0,0,0;" +
+                "0,0,0,0,0;" +
+                "0,0,0,0,0;" +
+                "0,2,0,0,0;" +
+                "2,2,0,0,0;" +
+                "2,0,0,0,0"
+            )
+            new Bot().getOrderedPossibleEndStates(field, S, T).head should !== (Field(
+                "0,0,0,0,0;" +
+                "0,0,0,0,0;" +
+                "0,0,0,0,0;" +
+                "0,2,0,1,0;" +
+                "2,2,0,1,1;" +
+                "2,0,0,0,1"
+            ))
+        }
+    }
+
     describe("specific scenarios") {
         it("with an S then an I") {
             val field = Field(
@@ -55,6 +76,4 @@ class DelayedGratificationSpec extends FunSpec with Matchers {
         }
     }
 }
-
-
 
