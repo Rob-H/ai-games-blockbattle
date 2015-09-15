@@ -72,6 +72,37 @@ class PerformanceSpec extends FunSpec with Matchers {
 
             time.value.toInt should be <= acceptableMillisecondsToComplete
         }
+
+        it("for this scenario with two T shapes if timeout is less than 5000") {
+            val field = Field(
+                "0,0,0,1,1,1,0,0,0,0;" +
+                "0,0,0,0,0,0,0,0,0,0;" +
+                "0,0,0,0,0,0,0,0,0,0;" +
+                "0,0,0,0,0,0,0,0,0,0;" +
+                "0,0,0,0,0,0,0,0,0,0;" +
+                "0,0,0,0,0,0,0,0,0,0;" +
+                "0,0,0,0,0,0,0,0,0,0;" +
+                "0,0,0,0,0,0,0,0,0,0;" +
+                "0,2,2,0,2,0,0,0,0,0;" +
+                "0,2,2,0,2,2,0,0,0,0;" +
+                "0,0,2,0,2,2,0,0,2,2;" +
+                "0,2,2,0,2,2,0,2,2,2;" +
+                "0,2,2,2,2,2,2,2,2,2;" +
+                "2,2,2,2,2,2,2,2,0,2;" +
+                "2,2,2,2,2,2,0,2,2,2;" +
+                "2,2,2,2,0,2,2,2,2,2;" +
+                "2,2,2,2,2,2,2,2,2,0;" +
+                "2,2,0,2,2,2,2,2,2,2;" +
+                "2,0,2,2,2,2,2,2,2,2;" +
+                "3,3,3,3,3,3,3,3,3,3"
+            )
+            val lessThan5000 = 4999
+            val time = repeatMeasureWithWarming {
+                new Bot().getOrderedPossibleEndStates(field, T, T, lessThan5000)
+            }
+
+            time.value.toInt should be <= acceptableMillisecondsToComplete
+        }
     }
 }
 
