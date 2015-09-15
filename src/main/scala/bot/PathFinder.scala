@@ -23,7 +23,10 @@ trait PathFinder {
                 statesToExplore match {
                     case (path, state) :: remainingStates => {
                         if(explored contains state.currentField) iter(currentStateAndPath, remainingStates, explored)
-                        else iter((path, state), remainingStates ++ getAllActionsForState(state, path), explored + currentState.currentField)
+                        else {
+                            val sortedStatesToExplore = (remainingStates ++ getAllActionsForState(state, path)) sortBy {case (_,s) => s.distanceFrom(target)}
+                            iter((path, state), sortedStatesToExplore, explored + currentState.currentField)
+                        }
                     }
                     case _ => None
                 }

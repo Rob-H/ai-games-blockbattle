@@ -35,4 +35,6 @@ class FieldInPlay(val field: Field, val shape: Shape, val locationOfShape: Locat
         for( (action, Some(state)) <- allMoves ) yield (action, state)
     }
 
+    def distanceFrom(other: FieldInPlay):Int = math.abs(locationOfShape.x - other.locationOfShape.x) + math.abs(locationOfShape.y - other.locationOfShape.y)
+
 }
