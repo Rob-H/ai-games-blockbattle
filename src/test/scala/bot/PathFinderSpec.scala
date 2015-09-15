@@ -5,8 +5,16 @@ import moves._
 import org.scalatest._
 
 class PathFinderSpec extends FunSpec with Matchers {
-    private def getPathTo(targetField: Field, shape: Shape, shapeStartLocation: Location) =
-        new Bot().getPathTo(new FieldInPlay(targetField, shape, shapeStartLocation), targetField)
+    private def getPathTo(targetField: Field, shape: Shape, shapeStartLocation: Location) = {
+        val potentialFieldInPlays = for {
+            x <- -2 until targetField.width
+            y <- -2 until targetField.height
+            rotatedShape <- shape.shapeType.uniqueRotations.map(Shape(shape.shapeType,_))
+            if(rotatedShape.canBePlacedIn(targetField, Location(x,y)) && targetField.withShapeAt(rotatedShape, Location(x,y)) == targetField)
+        } yield new FieldInPlay(targetField, rotatedShape, Location(x,y))
+
+        new Bot().getPathTo(new FieldInPlay(targetField, shape, shapeStartLocation), potentialFieldInPlays.head)
+    }
     private def resultOf(moves: MoveType*) = Some(moves.toList)
 
     describe("the path finding function") {
@@ -15,7 +23,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "1,1;" +
                 "1,1"
             )
-
             getPathTo(targetField, Shape(O), Location(0,0)) should === (resultOf())
         }
 
@@ -32,7 +39,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "1,1,0;" +
                 "1,1,0"
             )
-
             getPathTo(targetField, Shape(O), Location(1,0)) should === (resultOf(LEFT))
         }
 
@@ -59,7 +65,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 )
 
                 getPathTo(targetField, Shape(O), Location(0,0)) should === (resultOf())
-
             }
         }
 
@@ -68,7 +73,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "0,0,1,1;" +
                 "0,0,1,1"
             )
-
             getPathTo(targetField, Shape(O), Location(0,0)) should === (resultOf(RIGHT, RIGHT))
         }
 
@@ -77,7 +81,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "1,1,0,0;" +
                 "1,1,0,0"
             )
-
             getPathTo(targetField, Shape(O), Location(2,0)) should === (resultOf(LEFT, LEFT))
         }
 
@@ -86,7 +89,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "0,0,0,0,0,1,1;" +
                 "0,0,0,0,0,1,1"
             )
-
             getPathTo(targetField, Shape(O), Location(0,0)) should === (resultOf(RIGHT, RIGHT, RIGHT, RIGHT, RIGHT))
         }
 
@@ -95,7 +97,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "1,1,0,0,0,0,0,0;" +
                 "1,1,0,0,0,0,0,0"
             )
-
             getPathTo(targetField, Shape(O), Location(6,0)) should === (resultOf(LEFT, LEFT, LEFT, LEFT, LEFT, LEFT))
         }
 
@@ -105,7 +106,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "0,1,1,2;" +
                 "0,1,1,2"
             )
-
             getPathTo(targetField, Shape(O), Location(0,0)) should === (resultOf(DOWN, RIGHT))
         }
 
@@ -116,7 +116,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "0,0,1,0;" +
                 "0,0,1,0"
             )
-
             getPathTo(targetField, Shape(I), Location(0,0)) should === (resultOf(TURNRIGHT))
         }
 
@@ -127,7 +126,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                 "0,1,0,0;" +
                 "2,1,2,2"
             )
-
             getPathTo(targetField, Shape(I), Location(0,0)) should === (resultOf(TURNLEFT))
         }
 
@@ -188,7 +186,6 @@ class PathFinderSpec extends FunSpec with Matchers {
                     "0,0,1,0"
                 )
                 getPathTo(targetField, Shape(T), Location(0, 0)) should === (resultOf(RIGHT, DOWN, DOWN, DOWN, TURNRIGHT))
-
             }
         }
     }

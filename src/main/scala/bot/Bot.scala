@@ -19,16 +19,16 @@ class Bot extends PathFinder{
         }
     }
 
-    def getOrderedPossibleEndStates(field: Field, currentShape: ShapeType, nextShape: ShapeType): Stream[Field] = {
+    def getOrderedPossibleEndStates(field: Field, currentShape: ShapeType, nextShape: ShapeType): Stream[FieldInPlay] = {
         def getHeuristicOfNextShape(currentState: Field) = {
             val startOfPath = new FieldInPlay(currentState.finalise, Shape(nextShape), testStartLocation)
-            currentState.finalise.getPossibleEndStates(nextShape).sortBy(-_.heuristic).take(5)
-                .filter(getPathTo(startOfPath, _).nonEmpty)
-                .foldLeft(-(field.height*field.width)) ((current, next) => math.max(current, currentState.heuristic + (next.heuristic*2)))
+            currentState.finalise.getPossibleEndStates(nextShape).sortBy(-_.field.heuristic).take(5)
+                .filter { state => getPathTo(startOfPath, state, true).nonEmpty }
+                .foldLeft(-(field.height*field.width)) ((current, next) => math.max(current, currentState.heuristic + (next.field.heuristic*2)))
         }
 
-        val bestEndStatesForCurrentShape = field.getPossibleEndStates(currentShape).sortBy(-_.heuristic).toStream.take(5)
-        bestEndStatesForCurrentShape sortBy (-getHeuristicOfNextShape(_))
+        val bestEndStatesForCurrentShape = field.getPossibleEndStates(currentShape).sortBy(-_.field.heuristic).toStream.take(5)
+        bestEndStatesForCurrentShape sortBy { state => -getHeuristicOfNextShape(state.field) }
     }
 }
 

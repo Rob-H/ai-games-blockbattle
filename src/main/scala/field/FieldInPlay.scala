@@ -1,5 +1,6 @@
 package field
 
+import moves._
 import scala.annotation.tailrec
 
 class FieldInPlay(val field: Field, val shape: Shape, val locationOfShape: Location) {
@@ -22,6 +23,16 @@ class FieldInPlay(val field: Field, val shape: Shape, val locationOfShape: Locat
             else resultOfDrop(nextLocation)
         }
         new FieldInPlay(field, shape, resultOfDrop(locationOfShape))
+    }
+    lazy val allValidMoves = {
+        val allMoves = List(
+            (LEFT, moveLeft),
+            (RIGHT, moveRight),
+            (DOWN, moveDown),
+            (TURNRIGHT, turnRight),
+            (TURNLEFT, turnLeft)
+        )
+        for( (action, Some(state)) <- allMoves ) yield (action, state)
     }
 
 }

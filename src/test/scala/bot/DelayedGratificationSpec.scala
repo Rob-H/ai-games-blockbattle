@@ -17,7 +17,7 @@ class DelayedGratificationSpec extends FunSpec with Matchers {
                 "2,2,0,0,0,0"
             )
 
-            new Bot().getOrderedPossibleEndStates(field, I, I).head should === (Field(
+            new Bot().getOrderedPossibleEndStates(field, I, I).head.field should === (Field(
                 "0,0,0,0,0,0;" +
                 "0,0,0,0,0,0;" +
                 "0,0,0,0,0,0;" +
@@ -40,7 +40,7 @@ class DelayedGratificationSpec extends FunSpec with Matchers {
                 "2,2,0,0,0;" +
                 "2,0,0,0,0"
             )
-            new Bot().getOrderedPossibleEndStates(field, S, T).head should !== (Field(
+            new Bot().getOrderedPossibleEndStates(field, S, T).head.field should !== (Field(
                 "0,0,0,0,0;" +
                 "0,0,0,0,0;" +
                 "0,0,0,0,0;" +
@@ -63,7 +63,7 @@ class DelayedGratificationSpec extends FunSpec with Matchers {
                 "2,2,2,0,2,2,2,2,2,2;" +
                 "2,2,2,0,2,2,2,2,2,2"
             )
-            new Bot().getOrderedPossibleEndStates(field, S, I).head should === (Field(
+            new Bot().getOrderedPossibleEndStates(field, S, I).head.field should === (Field(
                 "0,0,0,0,0,0,0,0,0,0;" +
                 "0,0,0,0,0,0,0,0,0,0;" +
                 "0,0,0,0,0,0,0,0,1,0;" +

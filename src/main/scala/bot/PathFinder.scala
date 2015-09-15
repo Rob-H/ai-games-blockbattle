@@ -5,27 +5,18 @@ import moves._
 import scala.annotation.tailrec
 
 trait PathFinder {
-    def getPathTo(startState: FieldInPlay, target: Field): Option[Seq[MoveType]] = {
+    def getPathTo(startState: FieldInPlay, target: FieldInPlay, quick: Boolean = false): Option[Seq[MoveType]] = {
 
         type PathAndState = Tuple2[List[MoveType], FieldInPlay]
 
-        def getAllActionsForState(state: FieldInPlay, currentPath: List[MoveType]) = {
-            val allMoves = List(
-                (LEFT :: currentPath, state.moveLeft),
-                (RIGHT :: currentPath, state.moveRight),
-                (DOWN :: currentPath, state.moveDown),
-                (TURNRIGHT :: currentPath, state.turnRight),
-                (TURNLEFT :: currentPath, state.turnLeft)
-            )
-            val allValidMoves = for( (path, Some(state)) <- allMoves ) yield (path, state)
-            allValidMoves
-        }
+        def getAllActionsForState(state: FieldInPlay, currentPath: List[MoveType]) =
+            state.allValidMoves.map { case (move, state) => (move :: currentPath, state)}
 
         @tailrec def iter(currentStateAndPath: PathAndState, statesToExplore: List[PathAndState], explored: Set[Field]): Option[Seq[MoveType]] = {
             val (currentPath, currentState) = currentStateAndPath
             val weAreFinished =
-                currentState.currentField == target ||
-                (currentState.currentShapeType != T && currentState.drop.currentField == target)
+                currentState.currentField == target.currentField ||
+                ((quick || currentState.currentShapeType != T) && currentState.drop.currentField == target.currentField)
 
             if (weAreFinished) Some(currentPath.reverse)
             else {

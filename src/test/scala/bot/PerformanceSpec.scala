@@ -34,7 +34,7 @@ class PerformanceSpec extends FunSpec with Matchers {
             }
 
             // scalastyle:off
-            time.value.toInt should be < 500
+            time.value.toInt should be <= 400
         }
     }
 }

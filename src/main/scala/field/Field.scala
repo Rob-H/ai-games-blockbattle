@@ -74,11 +74,11 @@ case class Field(val fieldString : String) {
         Field(fieldString);
     }
 
-    def getPossibleEndStates(shapeType: ShapeType): Seq[Field] = {
+    def getPossibleEndStates(shapeType: ShapeType): Seq[FieldInPlay] = {
         for {
             rotatedShape <- shapeType.uniqueRotations.map(Shape(shapeType, _))
             loc <- rotatedShape.allPossibleEndLocations(this)
-        } yield this.withShapeAt(rotatedShape, loc)
+        } yield new FieldInPlay(this.withShapeAt(rotatedShape, loc), rotatedShape, loc)
     }
 
     override val toString = fieldString
