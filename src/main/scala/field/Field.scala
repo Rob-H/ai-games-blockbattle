@@ -21,11 +21,15 @@ case class Field(val fieldString : String) {
 
         val fullRowsHeuristic = (0 until height).foldLeft(0f) {(acc, rowIndex) => {
             val row = grid(rowIndex)
-            val weighting = rowIndex.toFloat/(height-1)
             val emptySquares = (row filter(_.isEmpty)).length
             if (emptySquares == width) acc
             else if (emptySquares == 0) acc + width
-            else acc - (emptySquares*weighting)
+            else {
+                val weighting = rowIndex.toFloat/(height-1)
+                val overHalfwayUp = rowIndex  < (height.toFloat/2f)
+                val base = if(overHalfwayUp) acc - width else acc
+                base - ((emptySquares*weighting))
+            }
         }}
 
         val numberOfEmptyBlocksWithBlockAbove = (for {
