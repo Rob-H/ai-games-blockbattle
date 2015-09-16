@@ -1,6 +1,6 @@
 package field
 
-case class CellType(val code: Int) {
+case class CellType(code: Int) {
 
     val isShape : Boolean = this == SHAPE
     val isSolid : Boolean = this == SOLID

@@ -2,7 +2,7 @@ package field
 
 import scala.annotation.tailrec
 
-case class Shape(val shapeType: ShapeType, val degreesRotated: Int = 0) {
+case class Shape(shapeType: ShapeType, degreesRotated: Int = 0) {
     type CellGrid = Seq[Seq[CellType]]
     private val oneRotation = 90
 

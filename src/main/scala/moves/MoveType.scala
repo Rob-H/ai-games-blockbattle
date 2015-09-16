@@ -1,6 +1,6 @@
 package moves
 
-case class MoveType(val move: String) {}
+case class MoveType(move: String) {}
 
 object DOWN extends MoveType("down")
 object LEFT extends MoveType("left")
