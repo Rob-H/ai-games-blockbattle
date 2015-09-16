@@ -1,67 +1,56 @@
 package field
-
 import org.scalatest._
 
 class FieldRatingSpec extends FunSpec with Matchers {
-    describe("a field with a full row") {
-        describe("vs one without") {
-            it("for block in left corner and T shape, the full row should have a higher score") {
-                val field1 = Field(
-                    "0,0,0,0;" +
-                    "0,0,0,0;" +
-                    "0,0,1,0;" +
-                    "2,1,1,1;"
-                )
+    describe("a field with a full row vs one without") {
+        it("for block in left corner and T shape, the full row should have a higher score") {
+            val field1 = Field(
+                "0,0,0,0;" +
+                "0,0,0,0;" +
+                "0,0,1,0;" +
+                "2,1,1,1;"
+            )
+            val field2 = Field(
+                "0,0,0,0;" +
+                "0,0,0,0;" +
+                "1,1,1,0;" +
+                "2,1,0,0;"
+            )
+            field1.heuristic should be > field2.heuristic
+        }
 
-                val field2 = Field(
-                    "0,0,0,0;" +
-                    "0,0,0,0;" +
-                    "1,1,1,0;" +
-                    "2,1,0,0;"
-                )
-
-                field1.heuristic should be > field2.heuristic
-            }
-
-            it("for block in right corner and T shape, the full row should have a higher score") {
-                val field1 = Field(
-                    "0,0,0,0;" +
-                    "0,0,0,0;" +
-                    "0,1,0,0;" +
-                    "1,1,1,2;"
-                )
-
-                val field2 = Field(
-                    "0,0,0,0;" +
-                    "0,0,0,0;" +
-                    "0,1,1,1;" +
-                    "0,0,1,2;"
-                )
-
-                field1.heuristic should be > field2.heuristic
-            }
+        it("for block in right corner and T shape, the full row should have a higher score") {
+            val field1 = Field(
+                "0,0,0,0;" +
+                "0,0,0,0;" +
+                "0,1,0,0;" +
+                "1,1,1,2;"
+            )
+            val field2 = Field(
+                "0,0,0,0;" +
+                "0,0,0,0;" +
+                "0,1,1,1;" +
+                "0,0,1,2;"
+            )
+            field1.heuristic should be > field2.heuristic
         }
     }
 
-    describe("a field with two full rows") {
-        describe("vs one with just one") {
-            it("the two full rows should have a higher score") {
-                val field1 = Field(
-                    "0,0,0,0;" +
-                    "0,0,0,0;" +
-                    "2,1,1,1;" +
-                    "2,2,1,2;"
-                )
-
-                val field2 = Field(
-                    "0,0,0,0;" +
-                    "0,0,1,0;" +
-                    "2,1,1,0;" +
-                    "2,2,1,2;"
-                )
-
-                field1.heuristic should be > field2.heuristic
-            }
+    describe("a field with two full rows vs one with just one") {
+        it("the two full rows should have a higher score") {
+            val field1 = Field(
+                "0,0,0,0;" +
+                "0,0,0,0;" +
+                "2,1,1,1;" +
+                "2,2,1,2;"
+            )
+            val field2 = Field(
+                "0,0,0,0;" +
+                "0,0,1,0;" +
+                "2,1,1,0;" +
+                "2,2,1,2;"
+            )
+            field1.heuristic should be > field2.heuristic
         }
     }
 
@@ -75,7 +64,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                     "2,2,1,1,0;" +
                     "2,2,1,1,0;"
                 )
-
                 val field2 = Field(
                     "0,0,0,0,0;" +
                     "1,1,0,0,0;" +
@@ -83,7 +71,53 @@ class FieldRatingSpec extends FunSpec with Matchers {
                     "2,2,0,0,0;" +
                     "2,2,0,0,0;"
                 )
-
+                field1.heuristic should be > field2.heuristic
+            }
+            it("particularly near the bottom") {
+                val field1 = Field(
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,2,2,0,0,0,0;" +
+                    "0,0,2,2,2,2,0,0,0,0;" +
+                    "0,0,2,2,2,2,0,0,0,0;" +
+                    "0,0,2,2,2,2,0,0,0,0;" +
+                    "0,0,2,2,2,2,0,0,2,0;" +
+                    "0,2,2,2,2,2,0,2,2,0;" +
+                    "0,0,2,2,2,2,0,2,2,0;" +
+                    "0,2,2,2,2,2,0,2,2,0;" +
+                    "0,2,2,2,2,2,0,2,2,0;" +
+                    "1,2,2,2,2,0,0,2,2,0;" +
+                    "1,2,2,2,2,2,0,2,2,0;" +
+                    "1,2,2,2,2,2,2,2,2,0;" +
+                    "1,2,2,2,2,2,2,2,2,0;" +
+                    "2,0,2,2,2,2,2,2,2,2;" +
+                    "3,3,3,3,3,3,3,3,3,3"
+                )
+                val field2 = Field(
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0,0,0,0,0;" +
+                    "0,0,0,0,2,2,0,0,1,0;" +
+                    "0,0,2,2,2,2,0,0,1,0;" +
+                    "0,0,2,2,2,2,0,0,1,0;" +
+                    "0,0,2,2,2,2,0,0,1,0;" +
+                    "0,0,2,2,2,2,0,0,2,0;" +
+                    "0,2,2,2,2,2,0,2,2,0;" +
+                    "0,0,2,2,2,2,0,2,2,0;" +
+                    "0,2,2,2,2,2,0,2,2,0;" +
+                    "0,2,2,2,2,2,0,2,2,0;" +
+                    "0,2,2,2,2,0,0,2,2,0;" +
+                    "0,2,2,2,2,2,0,2,2,0;" +
+                    "0,2,2,2,2,2,2,2,2,0;" +
+                    "0,2,2,2,2,2,2,2,2,0;" +
+                    "2,0,2,2,2,2,2,2,2,2;" +
+                    "3,3,3,3,3,3,3,3,3,3"
+                )
                 field1.heuristic should be > field2.heuristic
             }
         }
@@ -97,7 +131,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                     "0,2,0,1,0;" +
                     "0,2,1,1,1;"
                 )
-
                 val field2 = Field(
                     "0,0,0,0,0;" +
                     "0,0,0,0,0;" +
@@ -105,7 +138,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                     "0,2,1,1,1;" +
                     "0,2,0,1,0;"
                 )
-
                 field1.heuristic should be > field2.heuristic
             }
 
@@ -117,7 +149,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                     "2,2,1,1,1;" +
                     "0,2,0,1,0;"
                 )
-
                 val field2 = Field(
                     "0,0,0,0,0;" +
                     "0,0,0,0,0;" +
@@ -125,7 +156,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                     "2,2,0,1,0;" +
                     "0,2,1,1,1;"
                 )
-
                 field1.heuristic should be > field2.heuristic
             }
 
@@ -137,7 +167,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                     "1,0,0,0,0;" +
                     "1,2,0,2,0;"
                 )
-
                 val field2 = Field(
                     "0,0,0,0,0;" +
                     "0,0,0,0,0;" +
@@ -145,7 +174,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                     "1,1,1,1,0;" +
                     "0,2,0,2,0;"
                 )
-
                 field1.heuristic should be > field2.heuristic
             }
 
@@ -157,7 +185,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                    "2,2,2,2,2,0,2,2,0,0;" +
                    "0,2,2,2,2,2,2,2,2,0"
                 )
-
                 val field2 = Field(
                    "0,0,0,0,0,0,0,0,0,0;" +
                    "0,0,0,0,0,0,0,0,0,0;" +
@@ -165,7 +192,6 @@ class FieldRatingSpec extends FunSpec with Matchers {
                    "2,2,2,2,2,0,2,2,1,1;" +
                    "0,2,2,2,2,2,2,2,2,0"
                 )
-
                 field1.heuristic should be > field2.heuristic
             }
         }
