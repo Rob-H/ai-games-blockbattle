@@ -19,12 +19,13 @@ case class Field(val fieldString : String) {
             allCellsAboveThatAreNotPartOfAFullRow exists (!_.isEmpty)
         }
 
-        val fullRowsHeuristic = (0 until height).foldLeft(0) {(acc, rowIndex) => {
+        val fullRowsHeuristic = (0 until height).foldLeft(0f) {(acc, rowIndex) => {
             val row = grid(rowIndex)
+            val weighting = rowIndex.toFloat/(height-1)
             val emptySquares = (row filter(_.isEmpty)).length
             if (emptySquares == width) acc
-            else if (emptySquares == 0) acc + (width)
-            else acc - (emptySquares*(rowIndex/2))
+            else if (emptySquares == 0) acc + width
+            else acc - (emptySquares*weighting)
         }}
 
         val numberOfEmptyBlocksWithBlockAbove = (for {

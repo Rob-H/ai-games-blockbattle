@@ -25,7 +25,7 @@ class Bot extends PathFinder{
             val startOfPath = new FieldInPlay(currentState.finalise, Shape(nextShape), testStartLocation)
             currentState.finalise.getPossibleEndStates(nextShape).sortBy(-_.field.heuristic).take(5)
                 .filter { state => timeout < halfMaxTimeout || getPathTo(startOfPath, state, true).nonEmpty }
-                .foldLeft(-(field.height*field.width)) ((current, next) => math.max(current, currentState.heuristic + (next.field.heuristic*2)))
+                .foldLeft(-((field.height*field.width).toFloat)) ((current, next) => math.max(current, currentState.heuristic + (next.field.heuristic*2)))
         }
 
         val bestEndStatesForCurrentShape = field.getPossibleEndStates(currentShape).sortBy(-_.field.heuristic).toStream.take(5)
