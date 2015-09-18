@@ -121,6 +121,45 @@ class FieldRatingSpec extends FunSpec with Matchers {
                 field1.heuristic should be > field2.heuristic
             }
         }
+
+        describe("should prefer having groups of blocks together") {
+            it("for this scenario") {
+                val field1 = Field(
+                    "0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0;" +
+                    "2,2,1,1,0,0;" +
+                    "2,2,1,1,0,0;"
+                )
+                val field2 = Field(
+                    "0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0;" +
+                    "2,2,0,1,1,0;" +
+                    "2,2,0,1,1,0;"
+                )
+                field1.heuristic should be > field2.heuristic
+            }
+
+            it("when there is a space at the start") {
+                val field1 = Field(
+                    "0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0;" +
+                    "1,1,2,2,0,0;" +
+                    "1,1,2,2,0,0;"
+                )
+                val field2 = Field(
+                    "0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0;" +
+                    "0,0,0,0,0,0;" +
+                    "0,1,1,2,2,0;" +
+                    "0,1,1,2,2,0;"
+                )
+                field1.heuristic should be > field2.heuristic
+
+            }
+        }
     }
 }
 

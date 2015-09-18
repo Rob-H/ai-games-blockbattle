@@ -25,10 +25,16 @@ case class Field(fieldString : String) {
             if (emptySquares == width) acc
             else if (emptySquares == 0) acc + width
             else {
+                val firstCellOfRowIsEmpty = getCell(0, rowIndex).isEmpty
+                val numberOfGapsInRow = (1 until width).foldLeft(if(firstCellOfRowIsEmpty) 1 else 0) {(acc, columnIndex) => {
+                    if(getCell(columnIndex, rowIndex).isEmpty && !getCell(columnIndex-1, rowIndex).isEmpty){
+                        acc + 1
+                    } else acc
+                }}
                 val weighting = rowIndex.toFloat/(height-1)
                 val overHalfwayUp = rowIndex  < (height.toFloat/2f)
                 val base = if(overHalfwayUp) acc - width else acc
-                base - ((emptySquares*weighting))
+                base - ((emptySquares + numberOfGapsInRow)*weighting)
             }
         }}
 
